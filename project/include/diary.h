@@ -1,23 +1,19 @@
 #ifndef DIARY_H
 #define DIARY_H
 
-#include <fstream>
 #include "message.h"
+#include <string>
 
 struct Diary {
-	std::fstream file;
-	Message message;
-	int number_lines=0;
+	Diary(const std::string& name);
 
-	bool check_command(int argc, char **argv);
+	std::string filename;
+	Message* messages;
+	size_t messages_size;
+	size_t messages_capacity;
 
-	bool setFile();
-
-	void listCommand();
-
-	void addCommand();
-
-	bool existing_date();
+	void add(const std::string& message);
+	void write();
 };
 
 #endif
