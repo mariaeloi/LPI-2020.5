@@ -6,6 +6,7 @@
 
 struct Diary {
 	Diary(const std::string& name);
+	~Diary();
 
 	std::string filename;
 	Message* messages;
