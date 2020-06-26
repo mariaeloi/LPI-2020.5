@@ -20,21 +20,21 @@ void Time::set_from_string(const std::string& time) {
 std::string Time::to_string() {
 	std::stringstream stream;
 
-	if(hour < 9){
+	if(hour <= 9){
 		stream << '0';
 	}
     stream << hour;
     
     stream << ':';
 
-    if(minute < 9){
+    if(minute <= 9){
     	stream << '0';
     }
     stream << minute;
 
     stream << ':';
 
-    if(second < 9){
+    if(second <= 9){
     	stream << '0';
     }
     stream << second;
