@@ -1,4 +1,4 @@
-#include "../include/date.h"
+#include "date.h"
 
 #include <sstream>
 #include <iostream>

@@ -10,8 +10,8 @@ struct App{
     App(const std::string& filename);
     int run(int argc, char* argv[]);
     int show_usage(char *argv[]);
-    void add();
-    void add(const std::string message);
+    int add();
+    int add(const std::string message);
     void list_messages();
 };
 

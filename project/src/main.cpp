@@ -1,6 +1,6 @@
-#include "../include/app.h"
+#include "app.h"
 
-int main(int argc, char const *argv[]) { 
+int main(int argc, char *argv[]) { 
 	
 	App aplicativo("diary.md");
 	

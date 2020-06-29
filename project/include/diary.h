@@ -13,8 +13,10 @@ struct Diary {
 	size_t messages_size;
 	size_t messages_capacity;
 
+	void upload_messages();
+	void increase_messages();
 	void add(const std::string& message);
-	void write();
+	int write();
 };
 
 #endif

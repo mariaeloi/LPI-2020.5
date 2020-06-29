@@ -1,4 +1,4 @@
-#include "../include/app.h"
+#include "app.h"
 
 #include <iostream>
 #include <string>
@@ -16,13 +16,12 @@ int App::run(int argc, char* argv[]) {
 
     if (action == "add") {
         if (argc == 2) {
-            add();
+            return add();
         } else {
-            add(argv[2]);
+            return add(argv[2]);
         }
     } else if (action == "list") {
         list_messages();
-    } else if (action == "search") {
     } else {
         return show_usage(argv);
     }
@@ -30,17 +29,17 @@ int App::run(int argc, char* argv[]) {
     return 0;
 }
 
-void App::add() {
+int App::add() {
     std::string message;
     std::cout << "Enter your message:" << std::endl;
     std::getline(std::cin, message);
 
-    add(message);
+    return add(message);
 }
 
-void App::add(const std::string message) {
+int App::add(const std::string message) {
     diary.add(message);
-    diary.write();
+    return diary.write();
 }
 
 void App::list_messages() {
