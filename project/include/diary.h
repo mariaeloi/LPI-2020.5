@@ -17,6 +17,7 @@ struct Diary {
 	void increase_messages();
 	void add(const std::string& message);
 	int write();
+	Message* search(std::string what);
 };
 
 #endif

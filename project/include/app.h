@@ -13,6 +13,8 @@ struct App{
     int add();
     int add(const std::string message);
     void list_messages();
+    int search();
+    int search(std::string what);
 };
 
 #endif

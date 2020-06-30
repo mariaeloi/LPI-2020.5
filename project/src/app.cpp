@@ -22,6 +22,12 @@ int App::run(int argc, char* argv[]) {
         }
     } else if (action == "list") {
         list_messages();
+    } else if (action == "search") {
+    	if (argc == 2) {
+    		return search();
+    	} else {
+    		search(argv[2]);
+    	}
     } else {
         return show_usage(argv);
     }
@@ -31,7 +37,7 @@ int App::run(int argc, char* argv[]) {
 
 int App::add() {
     std::string message;
-    std::cout << "Enter your message:" << std::endl;
+    std::cout << "Enter your message: ";
     std::getline(std::cin, message);
 
     return add(message);
@@ -49,8 +55,29 @@ void App::list_messages() {
     }
 }
 
+int App::search() {
+	std::string what;
+	std::cout << "Enter a term search: ";
+	std::getline(std::cin, what);
+
+	return search(what);
+}
+
+int App::search(std::string what) {
+	Message *message = diary.search(what);
+	if (!message) {
+		std::cout << "No match for \""<< what << "\".\n";
+    	return 1;
+	}
+
+	std::cout << "\"" << what << "\" found in: \n\t# " << message->date.to_string()
+			  << "\n\t- " << message->time.to_string() << message->content << std::endl;
+	return 0;
+}
+
 int App::show_usage(char *argv[]) {
     std::cout << "Use:   " << argv[0] << " add <message>\n"
-              << "       " << argv[0] << " list\n";
+              << "       " << argv[0] << " list\n"
+              << "       " << argv[0] << " search <search term>\n";
     return 1;
 }

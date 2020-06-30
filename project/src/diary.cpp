@@ -46,7 +46,7 @@ void Diary::increase_messages() {
     messages_capacity *= 2;
     Message* new_array = new Message[messages_capacity];
 
-    for (int i = 0; i < messages_size; ++i) {
+    for (size_t i = 0; i < messages_size; ++i) {
         new_array[i] = messages[i];
     }
 
@@ -87,4 +87,14 @@ int Diary::write() {
     diary << "- " << time << " " << messages[messages_size-1].content << std::endl;
     std::cout << "Message successfully added.\n";
     return 0;
+}
+
+Message* Diary::search(std::string what) {
+    for (size_t i = 0; i < messages_size; ++i) {
+        if (messages[i].content.find(what) != std::string::npos) {
+            return &messages[i];
+        }
+    }
+
+    return nullptr;
 }
