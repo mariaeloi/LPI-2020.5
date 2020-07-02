@@ -4,15 +4,9 @@
 #include <iostream>
 #include <fstream>
 
-Diary::Diary(const std::string& name) : filename(name), messages(nullptr), messages_size(0), messages_capacity(10)
+Diary::Diary(const std::string& name) : filename(name)
 {
-	messages = new Message[messages_capacity];
     upload_messages();
-}
-
-Diary::~Diary()
-{
-    delete[] messages;
 }
 
 void Diary::upload_messages() {
@@ -23,6 +17,7 @@ void Diary::upload_messages() {
 
     std::string text_line;
     std::string date;
+    Message m;
 
     while (!diary.eof()){
         std::getline(diary, text_line);
@@ -30,42 +25,22 @@ void Diary::upload_messages() {
         if (text_line[0] == '#') {
             date = text_line.substr(2, 10);
         } else if (text_line[0] == '-') {
-            messages[messages_size].date.set_from_string(date);
-            messages[messages_size].time.set_from_string(text_line.substr(2, 8));
-            messages[messages_size].content = text_line.substr(10);
+            m.date.set_from_string(date);
+            m.time.set_from_string(text_line.substr(2, 8));
+            m.content = text_line.substr(10);
             
-            messages_size++;
-            if (messages_size >= messages_capacity) {
-                increase_messages();
-            }
+            messages.push_back(m);
         }
     }
 }
 
-void Diary::increase_messages() {
-    messages_capacity *= 2;
-    Message* new_array = new Message[messages_capacity];
-
-    for (size_t i = 0; i < messages_size; ++i) {
-        new_array[i] = messages[i];
-    }
-
-    delete[] messages; 
-    messages = new_array;
-}
-
 void Diary::add(const std::string& message) {
-	if (messages_size >= messages_capacity) {
-        increase_messages();
-    }
-
     Message m;
     m.content = message;
     m.date.set_from_string(get_current_date());
     m.time.set_from_string(get_current_time());
 
-    messages[messages_size] = m;
-    messages_size++;
+    messages.push_back(m);
 }
 
 int Diary::write() {
@@ -74,6 +49,8 @@ int Diary::write() {
         std::cerr << "You don’t have permission to open this file.\n";
         return 1;
     }
+
+    size_t messages_size = messages.size();
 
     std::string date = messages[messages_size-1].date.to_string();
     std::string time = messages[messages_size-1].time.to_string();
@@ -89,12 +66,14 @@ int Diary::write() {
     return 0;
 }
 
-Message* Diary::search(std::string what) {
-    for (size_t i = 0; i < messages_size; ++i) {
-        if (messages[i].content.find(what) != std::string::npos) {
-            return &messages[i];
+std::vector<Message*> Diary::search(std::string what) {
+	std::vector<Message*> found_messages;
+
+    for (auto& m : messages) {
+        if (m.content.find(what) != std::string::npos) {
+            found_messages.push_back(&m);
         }
     }
 
-    return nullptr;
+    return found_messages;
 }

@@ -49,8 +49,8 @@ int App::add(const std::string message) {
 }
 
 void App::list_messages() {
-    for (size_t i = 0; i < diary.messages_size; ++i) {
-        const Message& message = diary.messages[i];
+    for (auto m : diary.messages) {
+        const Message& message = m;
         std::cout << "-" << message.content << std::endl;
     }
 }
@@ -64,14 +64,17 @@ int App::search() {
 }
 
 int App::search(std::string what) {
-	Message *message = diary.search(what);
-	if (!message) {
+	std::vector<Message*> found_messages = diary.search(what);
+	if (found_messages.empty()) {
 		std::cout << "No match for \""<< what << "\".\n";
     	return 1;
 	}
 
-	std::cout << "\"" << what << "\" found in: \n\t# " << message->date.to_string()
-			  << "\n\t- " << message->time.to_string() << message->content << std::endl;
+	std::cout << "\"" << what << "\" found in: \n";
+	for (auto m : found_messages) {
+		std::cout << "\t-" << m->content << std::endl;
+	}
+
 	return 0;
 }
 
